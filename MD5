@@ -1,4 +1,4 @@
-92c413c784cd37e6ef54b8ab8d131c87 *DESCRIPTION
+fb73a4a202b3ec8ca7266bacf638c54d *DESCRIPTION
 1d465a836f7c31e8339d3728795750a7 *NAMESPACE
 fe24a797bc465adc660a7d42be7c56f7 *R/Hadza.R
 40dad782682aa232f45209f04a5125cf *R/MGKOs.R
@@ -8,11 +8,11 @@ d3bc0f3ee18a16f55f3a70223fa55831 *R/RecA.R
 337d3c7d5c33ea8f5937e046513a23d5 *R/aggregate_methods.R
 ac18a3dc677d415c26ba717961f857e0 *R/combineSQM.R
 9b8c2e06190eea1fccb3d49afdb5c80c *R/combineSQMlite.R
-e8c6642dcc18011036ca4c77934a66c5 *R/exportKrona.R
-4cef59a4ae455a02d0186d1276c644ae *R/exportPathway.R
+0242617b13179ab4c15a92cc9a994dab *R/exportKrona.R
+f6db881e517527d3286999d71877cce4 *R/exportPathway.R
 d411783f17539d8a6225ad673fe5b403 *R/exportTable.R
 ad6e13625bfdc642fdd351371a9337e9 *R/extra_methods.R
-f88bcf26e181dfd7ade197cee0409bf7 *R/figures.R
+59b92879df4126ed4b94bfff5c1ee2ef *R/figures.R
 2c0789d58608aeeec3f3880b5f4a8a8b *R/genericTable.R
 992d0f1032f03e91c6f9ba5c97382d62 *R/loadSQM.R
 ae09b1923d2f0d7ae116543346146071 *R/loadSQMlite.R
@@ -36,7 +36,7 @@ aacaf939fc9068980d7f1fbe8267dade *man/MGKOs.Rd
 044c5b36ec6eb01b70648aed706fd2d2 *man/USiCGs.Rd
 1d0b09f4190ae406923de9981db67174 *man/combineSQM.Rd
 9720e772afd22b7d40f3ff318ca9ecd2 *man/combineSQMlite.Rd
-50836192b9dcab3098665eedd5b75b29 *man/exportKrona.Rd
+9433454c323bc6bedb04b683c615d0f1 *man/exportKrona.Rd
 035ba3765373b88552c13a132d6be71a *man/exportPathway.Rd
 e1e3e52a615031de273a4bf142529cf4 *man/exportTable.Rd
 36f25af9074c512b9edaba1e55a91750 *man/loadSQM.Rd
