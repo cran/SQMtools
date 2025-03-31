@@ -7,7 +7,7 @@
 exportKrona(SQM, output_name = NA)
 }
 \arguments{
-\item{SQM}{A SQM or SQMlite object.}
+\item{SQM}{A SQM, SQMbunch or SQMlite object.}
 
 \item{output_name}{character. Name of the output file containing the Krona charts in html format (default \code{"<project_name>.krona.html")}.}
 }
@@ -26,7 +26,7 @@ data(Hadza)
 # Check that kronatools is present.
 ecode = system('ktImportText', ignore.stdout = TRUE, ignore.stderr = TRUE)
 # If so, run.
-if(ecode==0) { exportKrona(Hadza) }
+if(ecode==0) { exportKrona(Hadza, output_name = file.path(tempdir(), "krona.html")) }
 }
 }
 \seealso{

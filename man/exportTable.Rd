@@ -9,10 +9,7 @@ exportTable(table, output_name)
 \arguments{
 \item{table}{vector, matrix or data.frame. The table to be written.}
 
-\item{output_name}{character. Name of the output file.}
-}
-\value{
-No return value, but a table is produced in the current working directory.
+\item{output_name}{Either a character string naming a file or a connection open for writing.  ‘""’ indicates output to the console.}
 }
 \description{
 This function is a wrapper for R's write.table function.
@@ -22,11 +19,11 @@ This function is a wrapper for R's write.table function.
 data(Hadza)
 Hadza.iron = subsetFun(Hadza, "iron")
 # Write the taxonomic distribution at the genus level of all the genes related to iron.
-exportTable(Hadza.iron$taxa$genus$percent, "Hadza.ironGenes.genus.tsv")
+exportTable(Hadza.iron$taxa$genus$percent, file.path(tempdir(), "Hadza.ironGenes.genus.tsv"))
 # Now write the distribution of the different iron-related COGs
 #  (Clusters of Orthologous Groups) across samples.
-exportTable(Hadza.iron$functions$COG$tpm, "Hadza.ironGenes.COG.tsv")
+exportTable(Hadza.iron$functions$COG$tpm, file.path(tempdir(), "Hadza.ironGenes.COG.tsv"))
 # Now write all the information contained in the ORF table.
-exportTable(Hadza.iron$orfs$table, "Hadza.ironGenes.orftable.tsv")
+exportTable(Hadza.iron$orfs$table, file.path(tempdir(), "Hadza.ironGenes.orftable.tsv"))
 }
 }

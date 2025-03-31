@@ -7,7 +7,7 @@
 exportPathway(
   SQM,
   pathway_id,
-  count = "tpm",
+  count = "copy_number",
   samples = NULL,
   split_samples = FALSE,
   sample_colors = NULL,
@@ -16,15 +16,16 @@ exportPathway(
   fold_change_colors = NULL,
   max_scale_value = NULL,
   color_bins = 10,
+  output_dir = ".",
   output_suffix = "pathview"
 )
 }
 \arguments{
-\item{SQM}{A SQM or SQMlite object.}
+\item{SQM}{A SQM, SQMbunch or SQMlite object.}
 
 \item{pathway_id}{character. The five-number KEGG pathway identifier. A list of all pathway identifiers can be found in \url{https://www.genome.jp/kegg/pathway.html}.}
 
-\item{count}{character. Either \code{"abund"} for raw abundances, \code{"percent"} for percentages, \code{"bases"} for raw base counts, \code{"tpm"} for TPM normalized values or \code{"copy_number"} for copy numbers (default \code{"tpm"}). Note that a given count type might not available in this object (e.g. TPM or copy number in SQMlite objects originating from a SQM reads project).}
+\item{count}{character. Either \code{"abund"} for raw abundances, \code{"percent"} for percentages, \code{"bases"} for raw base counts, \code{"tpm"} for TPM normalized values or \code{"copy_number"} for copy numbers (default \code{"copy_number"}). Note that a given count type might not available in this object (e.g. TPM or copy number in SQMlite objects originating from a SQM reads project).}
 
 \item{samples}{character. An optional vector with the names of the samples to export. If absent, all samples will be exported (default \code{NULL}).}
 
@@ -42,6 +43,8 @@ exportPathway(
 
 \item{color_bins}{numeric. Number of bins used to generate the gradient in the color scale (default \code{10}).}
 
+\item{output_dir}{character. Directory in which to write the output files (default \code{"."}).}
+
 \item{output_suffix}{character. Suffix to be added to the output files (default \code{"pathview"}).}
 }
 \value{
@@ -53,9 +56,13 @@ This function is a wrapper for the pathview package (Luo \emph{et al.}, 2017. \e
 \examples{
 \donttest{
 data(Hadza)
-exportPathway(Hadza, "00910", count = 'copy_number', 
-              output_suffix = "nitrogen_metabolism", sample_colors = c("red", "blue"))
-exportPathway(Hadza, "00250", count = 'tpm', 
+
+exportPathway(Hadza, "00910", count = 'copy_number',
+              output_dir = tempdir(),
+              output_suffix = "nitrogen_metabolism",
+              sample_colors = c("red", "blue"))
+exportPathway(Hadza, "00250", count = 'tpm',
+              output_dir = tempdir(),
               output_suffix = "ala_asp_glu_metabolism_FoldChange", 
               fold_change_groups = list(c("H1"), c("H12")), max_scale_value=2)
 }
