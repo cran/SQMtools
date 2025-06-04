@@ -46,6 +46,7 @@ library(data.table)
 #'                     \tab \bold{$cov}               \tab                      \tab \emph{numeric matrix}   \tab bins              \tab samples        \tab coverages          \cr
 #'                     \tab \bold{$cpm}               \tab                      \tab \emph{numeric matrix}   \tab bins              \tab samples        \tab covs. / 10^6 reads \cr
 #'                     \tab \bold{$tax}               \tab                      \tab \emph{character matrix} \tab bins              \tab tax. ranks     \tab taxonomy           \cr
+#'                     \tab \bold{$tax_gtdb}          \tab                      \tab \emph{character matrix} \tab bins              \tab tax. ranks     \tab GTDB taxonomy      \cr
 #' \bold{$taxa}        \tab \bold{$superkingdom}      \tab \bold{$abund}        \tab \emph{numeric matrix}   \tab superkingdoms     \tab samples        \tab abundances (reads) \cr
 #'                     \tab                           \tab \bold{$percent}      \tab \emph{numeric matrix}   \tab superkingdoms     \tab samples        \tab percentages        \cr
 #'                     \tab \bold{$phylum}            \tab \bold{$abund}        \tab \emph{numeric matrix}   \tab phyla             \tab samples        \tab abundances (reads) \cr
@@ -275,7 +276,8 @@ loadSQM_ = function(project_path, tax_mode = 'prokfilter', trusted_functions_onl
     if(load_sequences)
         { 
         message('    sequences...')
-        SQM$orfs$seqs            = read.namedvector.zip(project_path, sprintf('results/tables/%s.orf.sequences.tsv', project_name), engine=engine)
+        SQM$orfs$seqs            = read.namedvector.zip(project_path, sprintf('results/tables/%s.orf.sequences.tsv', project_name),
+                                                        type = 'AA', engine=engine)
         }
     
     message('    taxonomy...')
@@ -283,7 +285,7 @@ loadSQM_ = function(project_path, tax_mode = 'prokfilter', trusted_functions_onl
 							            header=TRUE, row.names=1, sep='\t'))
     if(file.exists.zip(project_path, sprintf('results/tables/%s.orf.16S.tsv', project_name)))
         {
-        SQM$orfs$tax16S = read.namedvector.zip(project_path, sprintf('results/tables/%s.orf.16S.tsv', project_name), engine=engine)
+        SQM$orfs$tax16S = read.namedvector.zip(project_path, sprintf('results/tables/%s.orf.16S.tsv', project_name), type = 'text', engine=engine)
         }
 
     if(file.exists.zip(project_path, sprintf('results/18.%s.bintable', project_name)) & file.exists.zip(project_path, sprintf('results/tables/%s.orf.marker.genes.tsv', project_name)))
@@ -347,7 +349,8 @@ loadSQM_ = function(project_path, tax_mode = 'prokfilter', trusted_functions_onl
     if(load_sequences)
         {
         message('    sequences...')
-        SQM$contigs$seqs          = read.namedvector.zip(project_path, sprintf('results/tables/%s.contig.sequences.tsv', project_name), engine=engine)
+        SQM$contigs$seqs          = read.namedvector.zip(project_path, sprintf('results/tables/%s.contig.sequences.tsv', project_name),
+                                                         type = 'DNA', engine=engine)
         SQM$contigs$seqs          = SQM$contigs$seqs[rownames(SQM$contigs$table)]
         }
 
@@ -404,12 +407,11 @@ loadSQM_ = function(project_path, tax_mode = 'prokfilter', trusted_functions_onl
 							             header=TRUE, row.names=1, sep='\t'))
         if('Tax GTDB-Tk' %in% colnames(SQM$bins$table))
             {
-            goodcols = c('Method', 'Num contigs', 'GC perc', 'Tax 16S', 'Tax GTDB-Tk')
-        } else 
-            {
-            goodcols = c('Method', 'Num contigs', 'GC perc', 'Tax 16S')
+            SQM$bins$tax_gtdb = as.data.frame(t(data.frame(strsplit(SQM$bins$table[,'Tax GTDB-Tk'], ';'))))
+            rownames(SQM$bins$tax_gtdb) = rownames(SQM$bins$table)
+            colnames(SQM$bins$tax_gtdb) = colnames(SQM$bins$tax)
             }
-        goodcols = c(goodcols, c('Disparity', 'Completeness','Contamination'))
+        goodcols = c('Method', 'Num contigs', 'GC perc', 'Tax 16S', 'Disparity', 'Completeness','Contamination')
 	SQM$bins$table            = SQM$bins$table[,goodcols,drop=FALSE]
     } else
         {
@@ -450,7 +452,8 @@ loadSQM_ = function(project_path, tax_mode = 'prokfilter', trusted_functions_onl
     SQM$taxa$genus$percent        = 100 * t(t(SQM$taxa$genus$abund)        / colSums(SQM$taxa$genus$abund       ))
     SQM$taxa$species$percent      = 100 * t(t(SQM$taxa$species$abund)      / colSums(SQM$taxa$species$abund     ))
 
-    
+ 
+    # Make vectors translating long taxonomy strings into the name of the lowest rank
     SQM$misc$tax_names_long                 = list()
 
     SQM$misc$tax_names_long$superkingdom    = rownames(SQM$tax$superkingdom$abund)
@@ -472,11 +475,18 @@ loadSQM_ = function(project_path, tax_mode = 'prokfilter', trusted_functions_onl
     names(SQM$misc$tax_names_long$genus)    = sapply(strsplit(SQM$misc$tax_names_long$genus,   split=';g_'), FUN = function(x) x[2])
 
     SQM$misc$tax_names_long$species         = rownames(SQM$tax$species$abund)
-    names(SQM$misc$tax_names_long$species)  = sapply(strsplit(SQM$misc$tax_names_long$species, split=';s_'), FUN = function(x) x[2]) 
+    names(SQM$misc$tax_names_long$species)  = sapply(strsplit(SQM$misc$tax_names_long$species, split=';s_'), FUN = function(x) x[2])
 
+    # Different species can have the same name, notorious example is `Buchnera`, both an eukaryote and a prokaryote
+    # Make a fix to avoid duplicate names
+    for(rank in names(SQM$misc$tax_names_long))
+        {
+        names(SQM$misc$tax_names_long[[rank]]) = make.unique(names(SQM$misc$tax_names_long[[rank]]))
+        }
+
+    # Now make a named vector connecting short names and long names
     SQM$misc$tax_names_short                = unlist(lapply(SQM$misc$tax_names_long, names))
     names(SQM$misc$tax_names_short)         = unlist(SQM$misc$tax_names_long)
-
 
     # Use short names for taxonomy tables, since it makes it easier to search for specific taxa
     rownames(SQM$taxa$superkingdom$abund)   = SQM$misc$tax_names_short[rownames(SQM$taxa$superkingdom$abund)]
