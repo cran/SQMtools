@@ -92,11 +92,16 @@ create_bin = function(SQM, bin, contigs, delete_overlapping_bins = FALSE) {
     newSQM = SQM
     oldbins = unique(newSQM$contigs$bins[contigs,1])
     newSQM$contigs$bins[contigs,1] = bin
+    bins_in_new_table = unique(newSQM$contigs$bins[,1])
+    empty_bins = setdiff(oldbins, bins_in_new_table)
+    if(length(empty_bins)>0) {
+        warning(sprintf('The following bins have no remaining contigs and will be removed: %s', paste(empty_bins, collapse=', ')))
+        }
     if(delete_overlapping_bins) {
-        newSQM$contigs$bins[newSQM$contigs$bins[,1] %in% oldbins,1] = 'No_bin'
+        newSQM$contigs$bins[newSQM$contigs$bins[,1] %in% oldbins,1] = 'No bin'
         bins_in_new_table = bin
-    } else { bins_in_new_table = c(oldbins, bin) }
-
+        warning(sprintf('The following bins overlap with the new one and will be removed: %s', paste(oldbins, collapse=', ')))
+        }
     new_stats = get.bin.stats(newSQM, bins_in_new_table)
     newSQM$bins$table[bins_in_new_table,] = new_stats[['table']][bins_in_new_table,]
     newSQM$bins$table[bins_in_new_table,'Method'] = 'Custom'
@@ -104,8 +109,11 @@ create_bin = function(SQM, bin, contigs, delete_overlapping_bins = FALSE) {
     newSQM$bins$tax  [bins_in_new_table,] = new_stats[['tax'  ]][bins_in_new_table,]
     newSQM$bins$tax = as.matrix(newSQM$bins$tax)
     if(delete_overlapping_bins) {
-        newSQM$bins$table = newSQM$bins$table[!rownames(newSQM$bins$table) %in% oldbins,]
-        newSQM$bins$tax   = newSQM$bins$tax  [!rownames(newSQM$bins$tax)   %in% oldbins,]
+        newSQM$bins$table = newSQM$bins$table[!rownames(newSQM$bins$table) %in% oldbins,,drop=FALSE]
+        newSQM$bins$tax   = newSQM$bins$tax  [!rownames(newSQM$bins$tax)   %in% oldbins,,drop=FALSE]
+    } else {
+        newSQM$bins$table = newSQM$bins$table[bins_in_new_table,,drop = FALSE]
+        newSQM$bins$tax   = newSQM$bins$tax  [bins_in_new_table,,drop = FALSE]
         }
     bin_abunds                          = get.bin.abunds(newSQM)
     newSQM$bins$abund                   = bin_abunds[['abund']]
@@ -139,7 +147,7 @@ remove_contigs_from_bin = function(SQM, bin, contigs) {
         stop(sprintf('The following contig does not belong to bin %s: %s\n', bin, contigs))
         }
     newSQM = SQM
-    newSQM$contigs$bins[contigs,1] = 'No_bin'
+    newSQM$contigs$bins[contigs,1] = 'No bin'
     new_stats = get.bin.stats(newSQM, bin)
     newSQM$bins$table[bin,] = new_stats[['table']][bin,]
     newSQM$bins$table[bin,'Method'] = 'Custom'
@@ -160,7 +168,7 @@ remove_contigs_from_bin = function(SQM, bin, contigs) {
 get.bin.stats = function(SQM, bins = NULL)
     {
     if(is.null(bins)) { bins = unique(SQM$contigs$bins[,1]) }
-    bins = sort(bins[bins!='No_bin'])
+    bins = sort(bins[bins!='No bin'])
     GC            = c()
     nContigs      = c()
     disparity     = c()
@@ -274,7 +282,7 @@ get.bin.abunds = function(SQM, track_unmapped=FALSE)
     rownames(x)      = x[,1]
     x                = x[rownames(SQM$bin$table),-1,drop=F]
     nobin            = colSums(SQM$contigs$abund) - colSums(x)
-    if(sum(nobin)>0) { x['No_bin',] = nobin }
+    if(sum(nobin)>0) { x['No bin',] = nobin }
     if(track_unmapped) { x['Unmapped',] = SQM$total_reads - colSums(x) }
 
     res[['abund']]   = as.matrix(x)
@@ -294,4 +302,3 @@ get.bin.abunds = function(SQM, track_unmapped=FALSE)
     res[['cov']]     = round(res[['cov']], 2)
     return(res)
     }
-

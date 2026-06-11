@@ -9,12 +9,14 @@ plotTaxonomy(
   rank = "phylum",
   count = "percent",
   N = 15,
+  tax_source = NULL,
   tax = NULL,
   others = TRUE,
   samples = NULL,
   nocds = "treat_separately",
   ignore_unmapped = FALSE,
   ignore_unclassified = FALSE,
+  ignore_nobin = FALSE,
   no_partial_classifications = FALSE,
   rescale = FALSE,
   color = NULL,
@@ -32,6 +34,8 @@ plotTaxonomy(
 
 \item{N}{integer Plot the \code{N} most abundant taxa (default \code{15}).}
 
+\item{tax_source}{character. Source of taxonomic annotations, can be \code{"orfs"}, \code{"contigs"}, \code{"bins"} (GTDB bin taxonomy if available, SQM bin taxonomy otherwise), \code{"bins_gtdb"} (GTDB bin taxonomy) or \code{"bins_sqm"} (SQM bin taxonomy) (default: use the `tax_source` from the input object).}
+
 \item{tax}{character. Custom taxa to plot. If provided, it will override \code{N} (default \code{NULL}).}
 
 \item{others}{logical. Collapse the abundances of least abundant taxa, and include the result in the plot (default \code{TRUE}).}
@@ -43,6 +47,8 @@ plotTaxonomy(
 \item{ignore_unmapped}{logical. Don't include unmapped reads in the plot (default \code{FALSE}).}
 
 \item{ignore_unclassified}{logical. Don't include unclassified reads in the plot (default \code{FALSE}).}
+
+\item{ignore_nobin}{logical. Ignore reads not mapping to any bin when \code{tax_source} is \code{bins}, \code{bins_gtdb} or \code{bins_sqm} (default \code{FALSE}).}
 
 \item{no_partial_classifications}{logical. Treat reads not fully classified at the requested level (e.g. "Unclassified Bacteroidota" at the class level or below) as fully unclassified. This takes effect before \code{ignore_unclassified}, so if both are \code{TRUE} the plot will only contain fully classified contigs (default \code{FALSE}).}
 

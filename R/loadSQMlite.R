@@ -89,25 +89,17 @@ loadSQMlite = function(tables_path, tax_mode = 'allfilter')
      
     SQM                           = list()
 
-    allFiles                      = strsplit(list.files(tables_path), '.', fixed=TRUE)
+    allFiles                      = list.files(tables_path)
     if(length(allFiles) == 0)
         {
         stop(sprintf('Directory "%s" does not seem to contain valid SqueezeMeta tables', tables_path))
         }
-    
-    project_name                  = allFiles[sapply(allFiles, function(x) x[2] == 'superkingdom' & x[3] =='allfilter' & x[4] == 'abund' & x[5] == 'tsv')][[1]][1]
+   
+    allfilter.abund.suffix        = '\\.superkingdom.allfilter.abund.tsv$'
+    allfilter.abund.file          = allFiles[grepl(allfilter.abund.suffix, allFiles)][1]
+    project_name                  = gsub(allfilter.abund.suffix, '', allfilter.abund.file)
     SQM$misc                      = list()
     SQM$misc$project_name         = project_name
-
-    message('Loading taxonomies\n')                                   
-    SQM$taxa                      = list()
-    SQM$taxa$superkingdom         = list()
-    SQM$taxa$phylum               = list()
-    SQM$taxa$class                = list()
-    SQM$taxa$order                = list()
-    SQM$taxa$family               = list()
-    SQM$taxa$genus                = list()
-    SQM$taxa$species              = list()
 
     ### Check that this is a valid SQM project.
     if(is.null(project_name))
@@ -115,7 +107,17 @@ loadSQMlite = function(tables_path, tax_mode = 'allfilter')
         stop(sprintf('Directory "%s" does not seem to contain valid SqueezeMeta tables', tables_path))
         }
 
-    
+
+    message('Loading taxonomies\n')
+    SQM$taxa                      = list()
+    SQM$taxa$superkingdom         = list()
+    SQM$taxa$phylum               = list()
+    SQM$taxa$class                = list()
+    SQM$taxa$order                = list()
+    SQM$taxa$family               = list()
+    SQM$taxa$genus                = list()
+    SQM$taxa$species              = list() 
+
     SQM$taxa$superkingdom$abund   = as.matrix(read.table(sprintf('%s/%s.superkingdom.%s.abund.tsv', tables_path, project_name, tax_mode),
                                                          header=TRUE, sep='\t', row.names=1, check.names=FALSE))
     SQM$taxa$phylum$abund         = as.matrix(read.table(sprintf('%s/%s.phylum.%s.abund.tsv', tables_path, project_name, tax_mode),
@@ -207,8 +209,8 @@ loadSQMlite = function(tables_path, tax_mode = 'allfilter')
 
     message('Loading functions\n')
     SQM$functions                           = list()
-
-    
+ 
+    allFiles                                = strsplit(list.files(tables_path), '.', fixed=TRUE)
     funAbundFiles                           = allFiles[sapply(allFiles, function(x) x[1] == project_name & x[3] == 'abund' & x[4] == 'tsv')]
     funMethods                              = sapply(funAbundFiles, function(x) x[2])
 
@@ -246,6 +248,7 @@ loadSQMlite = function(tables_path, tax_mode = 'allfilter')
  
     ### Finish.
     SQM$misc$samples = colnames(SQM$tax$superkingdom$abund) # This should contain all samples, user is responsible for inconsistencies in the data.
+    SQM$total_reads = colSums(SQM$tax$superkingdom$abund)
     class(SQM)       = 'SQMlite'
     return(SQM)
 

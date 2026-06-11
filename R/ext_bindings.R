@@ -145,7 +145,7 @@ prepare_export_tables = function(SQM, features, count,
         if(!'Unclassified' %in% rownames(counts))
             {
             # Create from scratch
-            counts['Unclassified',] = counts['No CDS',,drop=FALSE]
+            counts = rbind(counts, Unclassified = counts['No CDS',,drop=FALSE])
         } else
             {
             # Or add Unclassified and No CDS
@@ -164,7 +164,7 @@ prepare_export_tables = function(SQM, features, count,
         partials_abund = colSums(counts[partials,,drop=FALSE])
         if(!'Unclassified' %in% rownames(counts))
             {
-            counts['Unclassified',] = partials_abund
+            counts = rbind(counts, Unclassified = partials_abund)
         } else 
             {
             counts['Unclassified',] = counts['Unclassified',,drop=FALSE] + partials_abund
@@ -192,7 +192,7 @@ prepare_export_tables = function(SQM, features, count,
             # Change rank names to fit microeco defaults
             colnames(tax) = c('Domain', 'Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species')[1:ncol(tax)]
             }
-        # Add extra rows for things like "Unmapped" and "No_bin"
+        # Add extra rows for things like "Unmapped" and "No bin"
         extra_rows = setdiff(rownames(counts), rownames(tax))
         for(rn in extra_rows)
             {
@@ -215,5 +215,11 @@ get_counts = function(SQMlist, features, count)
                     )
             )
         }
-    return(SQMlist[[count]])
+    counts = SQMlist[[count]]
+    if(count %in% c('abund', 'bases'))
+        {
+        # Some may not be integers (if dealing with multi-function KEGG/COG), so force rounding
+        counts = round(counts)
+        }
+    return(counts)
     }
