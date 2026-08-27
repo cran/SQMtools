@@ -7,6 +7,9 @@
 \format{
 Character vector with the COG identifiers for 10 Single Copy Phylogenetic Marker Genes.
 }
+\source{
+\doi{doi:10.1016/j.cell.2019.10.014}
+}
 \usage{
 data(MGOGs)
 }
@@ -20,7 +23,7 @@ compare functional profiles in samples with different sequencing depths.
 Salazar, G \emph{et al.} (2019). 
 Gene Expression Changes and Community Turnover Differentially Shape the Global Ocean Metatranscriptome
 \emph{Cell} \bold{179}:1068-1083.
-(\href{https://pubmed.ncbi.nlm.nih.gov/31730850/}{PubMed}).
+(\doi{doi:10.1016/j.cell.2019.10.014}).
 }
 \seealso{
 \code{\link{MGKOs}} for an equivalent list using KOs instead of OGs; \code{\link{USiCGs}} for an alternative set of single copy genes, and for examples on how to generate copy numbers.

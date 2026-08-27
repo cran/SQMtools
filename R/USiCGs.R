@@ -16,9 +16,9 @@
 #' @references Carr, Shen-Orr & Borenstein (2013). 
 #' Reconstructing the Genomic Content of Microbiome Taxa through Shotgun Metagenomic Deconvolution
 #' \emph{PLoS Comput. Biol.} \bold{9}:e1003292.
-#' (\href{https://pubmed.ncbi.nlm.nih.gov/24146609/}{PubMed}).
+#' (\doi{doi:10.1371/journal.pcbi.1003292}).
 #'
-#' @source \href{https://pubmed.ncbi.nlm.nih.gov/24146609/}{Carr \emph{et al.}, 2013. Table S1}.
+#' @source \doi{doi:10.1371/journal.pcbi.1003292}, Table S1
 #'
 #' @seealso \code{\link{MGOGs}} and \code{\link{MGKOs}} for an alternative set of single copy genes, and for examples on how to generate copy numbers.
 #'

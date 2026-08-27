@@ -45,28 +45,40 @@ export(subsetORFs)
 export(subsetRand)
 export(subsetSamples)
 export(subsetTax)
-importFrom(Biostrings,BStringSet)
-importFrom(Biostrings,DNAStringSet)
-importFrom(Biostrings,readBStringSet)
-importFrom(Biostrings,readDNAStringSet)
-importFrom(Biostrings,writeXStringSet)
+importFrom(Biostrings,
+  BStringSet,
+  DNAStringSet,
+  readBStringSet,
+  readDNAStringSet,
+  writeXStringSet
+)
 importFrom(data.table,data.table)
-importFrom(grDevices,colorRampPalette)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,png)
-importFrom(graphics,plot)
-importFrom(graphics,rasterImage)
-importFrom(graphics,text)
-importFrom(stats,aggregate)
-importFrom(stats,median)
-importFrom(stats,sd)
-importFrom(stats,setNames)
-importFrom(utils,combn)
-importFrom(utils,getFromNamespace)
-importFrom(utils,globalVariables)
-importFrom(utils,installed.packages)
-importFrom(utils,read.table)
-importFrom(utils,tail)
-importFrom(utils,write.table)
-importFrom(zip,unzip)
-importFrom(zip,zip_list)
+importFrom(grDevices,
+  colorRampPalette,
+  dev.off,
+  png
+)
+importFrom(graphics,
+  plot,
+  rasterImage,
+  text
+)
+importFrom(stats,
+  aggregate,
+  median,
+  sd,
+  setNames
+)
+importFrom(utils,
+  combn,
+  getFromNamespace,
+  globalVariables,
+  installed.packages,
+  read.table,
+  tail,
+  write.table
+)
+importFrom(zip,
+  unzip,
+  zip_list
+)

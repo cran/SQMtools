@@ -27,6 +27,6 @@ plotFunctions(Hadza, "COG")
 \references{
 Rampelli \emph{et al.}, 2015. Metagenome Sequencing of the Hadza
 Hunter-Gatherer Gut Microbiota. \emph{Curr. biol.} \bold{25}:1682-93
-(\href{https://pubmed.ncbi.nlm.nih.gov/25981789/}{PubMed}).
+(\doi{doi:10.1016/j.cub.2015.04.055}).
 }
 \keyword{datasets}

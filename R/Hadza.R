@@ -14,7 +14,7 @@
 #'
 #' @references Rampelli \emph{et al.}, 2015. Metagenome Sequencing of the Hadza
 #' Hunter-Gatherer Gut Microbiota. \emph{Curr. biol.} \bold{25}:1682-93
-#' (\href{https://pubmed.ncbi.nlm.nih.gov/25981789/}{PubMed}).
+#' (\doi{doi:10.1016/j.cub.2015.04.055}).
 #'
 #' @source \href{https://www.ncbi.nlm.nih.gov/sra/?term=SRR1927149}{SRR1927149}, \href{https://www.ncbi.nlm.nih.gov/sra/?term=SRR1929485}{SRR1929485}.
 #'

@@ -7,6 +7,9 @@
 \format{
 List containing vectors of PFAMs, each vector corresponding to a different set of collocated markers.
 }
+\source{
+\doi{doi:10.1101/gr.186072.114}
+}
 \usage{
 data(CheckMProkaryote)
 }
@@ -17,7 +20,7 @@ List of Universal Single Copy Genes for Bacteria and Archaea.
 Parks, Imelfort, Skennerton, Hugenholtz & Tyson (2015). 
 CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes
 \emph{Genome Res.} \bold{25}:1043-1055.
-(\href{https://pubmed.ncbi.nlm.nih.gov/25977477/}{PubMed}).
+(\doi{doi:10.1101/gr.186072.114}).
 }
 \seealso{
 \code{\link{USiCGs}}, \code{\link{MGOGs}} and \code{\link{MGKOs}} for an alternative set of single copy genes, and for examples on how to generate copy numbers.

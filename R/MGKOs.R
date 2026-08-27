@@ -16,7 +16,9 @@
 #' @references Salazar, G \emph{et al.} (2019). 
 #' Gene Expression Changes and Community Turnover Differentially Shape the Global Ocean Metatranscriptome
 #' \emph{Cell} \bold{179}:1068-1083.
-#' (\href{https://pubmed.ncbi.nlm.nih.gov/31730850/}{PubMed}).
+#' (\doi{doi:10.1016/j.cell.2019.10.014}).
+#'
+#' @source \doi{doi:10.1016/j.cell.2019.10.014},
 #'
 #' @seealso \code{\link{MGOGs}} for an equivalent list using OGs instead of KOs; \code{\link{USiCGs}} for an alternative set of single copy genes, and for examples on how to generate copy numbers.
 "MGKOs"
